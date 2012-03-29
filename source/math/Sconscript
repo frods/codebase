@@ -1,0 +1,9 @@
+Import('env')
+
+math_env = env.Clone()
+
+vector_obj = Object("vector.cpp")
+
+math_test_files = ["math_test.cpp",
+                   "math.cpp"]
+math_test = math_env.Program("math_test", math_test_files)

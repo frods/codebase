@@ -1,0 +1,7 @@
+Import('env')
+
+sort_env = env.Clone()
+
+sort_test_files = ["sort_test.cpp"]
+sort_test = sort_env.Program("sort_test", sort_test_files)
+

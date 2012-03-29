@@ -1,0 +1,5 @@
+Import('env')
+
+geo_env = env.Clone()
+
+intersect_sphere_obj = geo_env.Object("intersect_sphere.cpp")

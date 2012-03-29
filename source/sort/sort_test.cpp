@@ -1,4 +1,4 @@
-#include "bubble_sort_test.h"
+#include "bubble_sort.h"
 #include "merge_sort.h"
 #include <iostream>
 #include <stdlib.h>

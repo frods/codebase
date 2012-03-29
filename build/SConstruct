@@ -1,0 +1,24 @@
+env = Environment(
+    OBJPREFIX = "./obj/",
+    PROGPREFIX = "../bin/")
+
+Export('env')
+
+SConscript("../source/sort/SConscript")
+Default('../source/sort')
+
+SConscript("../source/math/SConscript")
+Default('../source/math')
+
+SConscript("../source/containers/SConscript")
+Default('../source/containers')
+
+SConscript("../source/geo/SConscript")
+Default('../source/geo')
+
+
+
+# dict = source_env.Dictionary()
+# for key, val in dict.iteritems():
+#     print key, "=",  val
+

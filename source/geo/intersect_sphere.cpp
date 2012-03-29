@@ -18,20 +18,20 @@ bool intersect_sphere(vector from, vector to, vector center, float radius)
   // Use this property to check if the ray is intersecting the sphere.
   float parallelogram_area = cross_ray_sphere_from.length();
   float ray_length = ray.length();
-  float height = parallelogramarea/ray_length;
+  float height = parallelogram_area/ray_length;
   
   if(height <= radius)
   {
     // The ray enters the sphere calculate the intersection point
-    float shere_from_length = shere_from.length();
+    float sphere_from_length = sphere_from.length();
     float heightsq = height * height;
     float from_to_proj = sqrt(sphere_from_length * sphere_from_length - heightsq);
     float sphere_to_proj = sqrt(radius * radius - heightsq);
-    float from_to_sphere = from_to_proj - shere_to_proj;
+    float from_to_sphere = from_to_proj - sphere_to_proj;
     float ray_fraction = from_to_sphere/ray_length;
     vector normray(ray);
     normray.normalize();
-    vector intersection = from + from_to_sphere * normray;
+    vector intersection = from + normray.scalar_multiply(from_to_sphere);
     vector normal = intersection - center;
     normal.normalize();
     return true;
