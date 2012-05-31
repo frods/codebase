@@ -26,3 +26,5 @@ source/math/vector.o
 source/sort/SConscript~
 
 source/sort/obj/sort_test.o
+
+source/expense_tracker/bin
