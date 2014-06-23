@@ -9,17 +9,21 @@ Conceptually, a merge sort works as follows
 Merge sort incorporates two main ideas to improve its runtime:
 
     A small list will take fewer steps to sort than a large list.
-    Fewer steps are required to construct a sorted list from two sorted lists than from two unsorted lists. For example, you only have to traverse each list once if they're already sorted (see the merge function below for an example implementation).
+    Fewer steps are required to construct a sorted list from two sorted lists than from two unsorted lists.
+    For example, you only have to traverse each list once if they're already sorted (see the merge function below for an example implementation).
 
 Example: Use merge sort to sort a list of integers contained in an array:
 
-Suppose we have an array A with n indices ranging from A0 to An − 1. We apply merge sort to A(A0..Ac − 1) and A(Ac..An − 1) where c is the integer part of n / 2. When the two halves are returned they will have been sorted. They can now be merged together to form a sorted array.
+Suppose we have an array A with n indices ranging from A0 to An − 1. We apply merge sort to A(A0..Ac − 1) and A(Ac..An − 1) where c is the integer part of n / 2.
+When the two halves are returned they will have been sorted. They can now be merged together to form a sorted array.
+
+Worst Case performance O(nlogn)
 */
 
 #ifndef MERGESORT
 #define MERGESORT
 
-#include "../containers/linked_list.h"
+#include "../containers/lists/double_linked_list.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
@@ -28,10 +32,6 @@ template<typename T>
 inline void MergeSortPart(T *Array, int Start, int End)
 {
   int Length = End - Start;
-  printf("[");
-  for(int i = Start; i < End; i++)
-    printf("%i ", Array[i]);
-  printf("%c]\n",0x8);
   
   if(Length <= 1)
     return;
@@ -39,56 +39,44 @@ inline void MergeSortPart(T *Array, int Start, int End)
   int Division = (Length / 2) + Start;
   MergeSortPart<T>(Array, Start, Division);
   MergeSortPart<T>(Array, Division, End);
-
-  DoubleLinkedList<T> TempList;
+  
+  // TODO replace with a Vector
+  DoubleLinkedList<T> Sorted;
 
   int iPart1 = Start;
   int iPart2 = Division;
-  while(iPart1 < End && iPart2 < End)
+  while(iPart1 < Division && iPart2 < End)
   {
-    if(!TempList.IsEmpty())
+    if(Array[iPart1] < Array[iPart2])
     {
-      if(TempList.GetAt(0) < Array[iPart2])
-      {
-        if(iPart1 < Division)
-          TempList.AddBack(Array[iPart1]);
-        Array[iPart1] = TempList.PopFront();
-        iPart1++;
-      }
-      else
-      {
-        TempList.AddBack(Array[iPart1]);
-        Array[iPart1] = Array[iPart2];
-        iPart1++;
-        iPart2++;
-      }
-    }
-    else if(Array[iPart1] > Array[iPart2])
-    {
-      TempList.AddBack(Array[iPart1]);
-      Array[iPart1] = Array[iPart2];
+      Sorted.AddBack(Array[iPart1]);
       iPart1++;
-      iPart2++;
     }
     else
     {
-      iPart1++;
-    }
-    if(iPart1 == iPart2)
+      Sorted.AddBack(Array[iPart2]);
       iPart2++;
+    }
   }
 
-  assert(iPart1 >= Division);
-  while(iPart1 < End && !TempList.IsEmpty())
+  assert(iPart1 == Division || iPart2 == End);
+  while(iPart1 < Division)
   {
-    TempList.AddBack(Array[iPart1]);
-    Array[iPart1] = TempList.PopFront();
-    iPart1++;
+      Sorted.AddBack(Array[iPart1]);
+      iPart1++;    
   }
-  printf("[");
+  while(iPart2 < End)
+  {
+      Sorted.AddBack(Array[iPart2]);
+      iPart2++;    
+  }
   for(int i = Start; i < End; i++)
-    printf("%i ", Array[i]);
-  printf("%c]\n",0x8);
+  {
+    assert(!Sorted.IsEmpty());
+    Array[i] = Sorted.PopFront();
+  }
+  assert(Sorted.IsEmpty());
+
 };
 
 template<typename T>

@@ -1,0 +1,1 @@
+Program('algorithm_test', Glob('*.cpp'))

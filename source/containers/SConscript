@@ -2,4 +2,4 @@ Import('env')
 
 containers_env = env.Clone()
 
-linked_list_obj = containers_env.Object("linked_list.cpp")
+container_text_obj = containers_env.Object("container_test.cpp")

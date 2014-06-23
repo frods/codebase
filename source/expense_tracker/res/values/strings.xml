@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">Expense Tracker</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
-    
+    <string name="transaction_label">Type</string>
+    <string-array name="transaction_type">
+        <item>Food</item>
+        <item>Toiletries</item>
+        </string-array>
+    <string name="date_label">Date</string>
+    <string name="ammount_message">Enter ammount</string>
+    <string name="description_message">Description</string>
+    <string name="button_enter">Enter</string>
 </resources>

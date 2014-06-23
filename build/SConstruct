@@ -7,14 +7,14 @@ Export('env')
 SConscript("../source/sort/SConscript")
 Default('../source/sort')
 
-SConscript("../source/math/SConscript")
-Default('../source/math')
+# SConscript("../source/math/SConscript")
+# Default('../source/math')
 
 SConscript("../source/containers/SConscript")
 Default('../source/containers')
 
-SConscript("../source/geo/SConscript")
-Default('../source/geo')
+#SConscript("../source/geo/SConscript")
+#Default('../source/geo')
 
 
 
