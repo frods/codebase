@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D4FA4E4A1958DFDD001F7054"
+               BlueprintIdentifier = "D4FA4EA71958E556001F7054"
                BuildableName = "container_test"
                BlueprintName = "container_test"
                ReferencedContainer = "container:container_test.xcodeproj">
@@ -29,15 +29,6 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FA4E4A1958DFDD001F7054"
-            BuildableName = "container_test"
-            BlueprintName = "container_test"
-            ReferencedContainer = "container:container_test.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -51,7 +42,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FA4E4A1958DFDD001F7054"
+            BlueprintIdentifier = "D4FA4EA71958E556001F7054"
             BuildableName = "container_test"
             BlueprintName = "container_test"
             ReferencedContainer = "container:container_test.xcodeproj">
@@ -66,15 +57,6 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FA4E4A1958DFDD001F7054"
-            BuildableName = "container_test"
-            BlueprintName = "container_test"
-            ReferencedContainer = "container:container_test.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

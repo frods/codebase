@@ -227,12 +227,14 @@ BinaryTreeNode<T> *BinaryTreeNode<T>::RotateLeft()
     // Set the right child as the head
     // This node will be the left child of that node
     // Before
+    //       |
     //     this
     //     /  \
     //    1   NewHead
     //         /  \
     //        2    3
     // After
+    //        |
     //     NewHead
     //     /    \
     //    this   3
@@ -243,6 +245,8 @@ BinaryTreeNode<T> *BinaryTreeNode<T>::RotateLeft()
     assert(NewHead != NULL);
     SetRight(NewHead->m_Left);
     NewHead->SetLeft(this);
+    
+    NewHead->m_Parent = Parent;
     if(Parent != NULL)
     {
         if(Parent->m_Left == this)
@@ -263,12 +267,14 @@ BinaryTreeNode<T> *BinaryTreeNode<T>::RotateRight()
     // Set the left child as the head
     // This node will be the right child of that node
     // Before
+    //       |
     //     this
     //     /   \
     // NewHead  3
     //  /  \
     // 1    2
     // After
+    //       |
     //     NewHead
     //     /   \
     //    1    this
@@ -279,6 +285,8 @@ BinaryTreeNode<T> *BinaryTreeNode<T>::RotateRight()
     assert(NewHead != NULL);
     SetLeft(NewHead->m_Right);
     NewHead->SetRight(this);
+    
+    NewHead->m_Parent = Parent;
     if(Parent != NULL)
     {
         if(Parent->m_Left == this)

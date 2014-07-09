@@ -20,14 +20,16 @@ class BinaryTree
   
   int Length();
   bool IsEmpty();
+  virtual bool Contains(T Value);
   virtual void Insert(T Value);
   virtual void Insert(BinaryTreeNode<T> *Node);
   virtual void InsertAt(BinaryTreeNode<T> *Start, BinaryTreeNode<T> *NewNode);
   virtual void Remove(BinaryTreeNode<T> *Node);
 
-  BinaryTreeNode<T> * GetHead();
+  BinaryTreeNode<T> *GetHead();
   
  protected:
+  virtual BinaryTreeNode<T> *GetNode(T Value);
   BinaryTreeNode<T> *m_Head;
   int m_Count;
 };
@@ -56,32 +58,19 @@ template<class T>
 int BinaryTree<T>::Length()
 {
   return m_Count;
-  // BinaryTreeNode<T> *CurrentNode = m_Head;
-  // int CurrentIndex = 0;
-  // while(CurrentNode)
-  // {
-  //   //Perform a depth first search to visit all nodes
-  //   if(CurrentNode->m_Left != 0)
-  //   {
-  //     CurrentNode = CurrentNode->m_Left;
-  //   }
-  //   else if(CurrentNode->m_Right != 0)
-  //   {
-  //     CurrentNode = CurrentNode->m_Right;
-  //   }
-  //   else
-  //   {
-  //     CurrentNode = CurrentNode->m_Parent;
-  //   }
-  //   CurrentIndex++;
-  // }
-  // return CurrentIndex;
 }
 
 template<class T>
 bool BinaryTree<T>::IsEmpty()
 {
   return m_Head == NULL;
+}
+
+template<class T>
+bool BinaryTree<T>::Contains(T Value)
+{
+  BinaryTreeNode<T> *Node = GetNode(Value);
+  return Node != NULL;
 }
 
 template<class T>
@@ -185,6 +174,31 @@ template<class T>
 BinaryTreeNode<T> *BinaryTree<T>::GetHead()
 {
   return m_Head;
+}
+
+template<class T>
+BinaryTreeNode<T> *BinaryTree<T>::GetNode(T Value)
+{
+  if(m_Head == NULL)
+  {
+    return NULL;
+  }
+  BinaryTreeNode<T> *CurrentNode = m_Head;
+  while(CurrentNode != NULL)
+  {
+    if(CurrentNode->m_Value == Value)
+    {
+      return CurrentNode;
+    }
+    if(CurrentNode->m_Value < Value)
+    {
+      CurrentNode = CurrentNode->m_Right;
+    }
+    else
+    {
+      CurrentNode = CurrentNode->m_Left;
+    }
+  }
 }
 
 #endif

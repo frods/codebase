@@ -9,29 +9,9 @@ Takes and adjacency graph with costs for each
 #ifndef ASTAR
 #define ASTAR
 
+#import "../containters/graphs/graph_edge.h"
+#import "../containters/graphs/graph_node.h"
 #import "../containers/trees/binary_tree_node.h"
-
-class Edge
-{
-public:
-	Edge();
-	~Edge();
-
-	bool operator <(Node *Right);
-	bool operator >(Node *Right);
-
-	Node *m_Node1;
-	Node *m_Node2;
-	int m_Cost;
-};
-
-class Node
-{
-public:
-
-	DoubleLinkedList<Edge *> m_Edges;
-	int m_Num;
-};
 
 class EvaluationNode:public BinaryTreeNode<int>
 {

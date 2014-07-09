@@ -208,14 +208,25 @@ void RedBlackTreeTest()
 	printf("Start building tree\n");
 	srand(time(NULL));
 	BreadthFristTraversal<int> TreeBreadthFirstIterator(&Tree);
-	for(int x = 0; x < 10; x++)
-	{
-		int val = rand() % 50;
-		printf("Inserting %i \n", val);
-		Tree.Insert(val);
-		Tree.PrintTree();
-		printf("\n");	
-	}
+//	for(int x = 0; x < 50; x++)
+//	{
+//		int val = rand() % 50;
+//		printf("Inserting %i \n", val);
+//		Tree.Insert(val);
+//		Tree.PrintTree();
+//		printf("\n");	
+//	}
+    Tree.Insert(30);
+    Tree.Insert(47);
+    Tree.Insert(39);
+    Tree.Insert(23);
+    Tree.Insert(27);
+    Tree.Insert(42);
+    Tree.Insert(2);
+    Tree.Insert(33);
+    Tree.Insert(31);
+    Tree.Insert(36);
+	Tree.PrintTree();
 	printf("\n");
 	InorderTraversal<int> TreeIterator(&Tree);
 	printf("start iterating inorder\n");
@@ -242,7 +253,7 @@ void RedBlackTreeTest()
 	printf("%i ", TreeBreadthFirstIterator.Next());
 	printf("\n");	
 }
-
+/*
 int main(int argc, const char *argv[])
 {
 	//LinkedListTest();
@@ -259,3 +270,4 @@ int main(int argc, const char *argv[])
 
 	RedBlackTreeTest();
 }
+*/

@@ -216,7 +216,7 @@ bool DoubleLinkedList<T>::Contains(T Value)
   {
     if(CurrentNode->m_Value == Value)
     {
-      return Result;
+      return true;
     }
     CurrentNode = CurrentNode->m_Next;
   }

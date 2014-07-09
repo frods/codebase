@@ -1,22 +1,5 @@
 #import "AStart.h"
 
-Edge::Edge()
-{
-	m_Node1 = NULL;
-	m_Node2 = NULL;
-	m_Cost = 0;
-}
-
-bool Edge::operator <(Node *Right)
-{
-	return m_Cost < Right->m_Cost;
-}
-
-bool Edge::operator >(Node *Right)
-{
-	return m_Cost > Right->m_Cost;
-}
-
 EvaluationNode::EvaluationNode()
 {
 	m_Node = NULL;

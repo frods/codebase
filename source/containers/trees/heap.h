@@ -18,11 +18,6 @@
 #include "binary_tree.h"
 
 //#define DEBUG
-#ifdef DEBUG
-    #define DEBUG_PRINT(...) printf(...)
-#else
-    #define DEBUG_PRINT(...)
-#endif
 
 template<class T> 
 class Heap: public BinaryTree<T>
@@ -36,7 +31,7 @@ public:
 
     void Update(BinaryTreeNode<T> *Node);
 
-    T PopMin();
+    T PopTop();
 
 protected:
     virtual bool ComesBefore(BinaryTreeNode<T> *First, BinaryTreeNode<T> *Second);
@@ -113,7 +108,7 @@ void Heap<T>::Update(BinaryTreeNode<T> *Node)
 }
 
 template<class T>
-T Heap<T>::PopMin()
+T Heap<T>::PopTop()
 {
     T Result;
     if(BinaryTree<T>::m_Head != NULL)
@@ -133,20 +128,20 @@ bool Heap<T>::ComesBefore(BinaryTreeNode<T> *First, BinaryTreeNode<T> *Second)
 template<class T>
 void Heap<T>::InsertAtEnd(BinaryTreeNode<T> *Start, BinaryTreeNode<T> *NewNode)
 {
-    DEBUG_PRINT("Insert %i under %i\n", NewNode->m_Value, Start->m_Value);
+    printf("Insert %i under %i\n", NewNode->m_Value, Start->m_Value);
     // Insert NewNode at the first available spot
     if(Start->m_Left == NULL)
     {
-        DEBUG_PRINT("Insert %i left of %i\n", NewNode->m_Value, Start->m_Value);
+        printf("Insert %i left of %i\n", NewNode->m_Value, Start->m_Value);
         Start->SetLeft(NewNode);
     }
     else if(Start->m_Right == NULL)
     {
-        DEBUG_PRINT("Insert %i right of %i\n", NewNode->m_Value, Start->m_Value);
-        DEBUG_PRINT("Start ");
-        DEBUG_PRINT("%s\n", Start->ToString());
-        DEBUG_PRINT("NewNode ");
-        DEBUG_PRINT("%s\n", NewNode->ToString());
+        printf("Insert %i right of %i\n", NewNode->m_Value, Start->m_Value);
+        printf("Start ");
+        printf("%s\n", Start->ToString());
+        printf("NewNode ");
+        printf("%s\n", NewNode->ToString());
         Start->SetRight(NewNode);
     }
     else
@@ -172,35 +167,35 @@ void Heap<T>::BubbleUp(BinaryTreeNode<T> *Start)
     while(Start->m_Parent != 0 && ComesBefore(Start, Start->m_Parent))
     {
     #ifdef DEBUG
-            DEBUG_PRINT("Swapping %i and %i\n", Start->m_Value, Start->m_Parent->m_Value);
-            DEBUG_PRINT("Start ");
-            DEBUG_PRINT("%s\n", Start->ToString());
-            DEBUG_PRINT("Parent ");
-            DEBUG_PRINT("%s\n", Start->m_Parent->ToString());
+            printf("Swapping %i and %i\n", Start->m_Value, Start->m_Parent->m_Value);
+            printf("Start ");
+            printf("%s\n", Start->ToString());
+            printf("Parent ");
+            printf("%s\n", Start->m_Parent->ToString());
             BinaryTreeNode<T> *OldParent = Start->m_Parent;
             if(OldParent->m_Parent != NULL)
             {
-                DEBUG_PRINT("ParentParent ");
-                DEBUG_PRINT("%s\n", OldParent->m_Parent->ToString());
+                printf("ParentParent ");
+                printf("%s\n", OldParent->m_Parent->ToString());
             }
             BinaryTreeNode<T> *OldParentParent = OldParent->m_Parent;
     #endif
         Start->Swap(Start->m_Parent);
     #ifdef DEBUG
-        DEBUG_PRINT("Swapped %i and %i\n", Start->m_Value, OldParent->m_Value);
-        DEBUG_PRINT("Start ");
-        DEBUG_PRINT("%s\n", Start->ToString());
+        printf("Swapped %i and %i\n", Start->m_Value, OldParent->m_Value);
+        printf("Start ");
+        printf("%s\n", Start->ToString());
         if(Start->m_Parent != NULL)
         {
-            DEBUG_PRINT("New Parent ");
-            DEBUG_PRINT("%s\n", Start->m_Parent->ToString());
+            printf("New Parent ");
+            printf("%s\n", Start->m_Parent->ToString());
         }
-        DEBUG_PRINT("Old Parent ");
-        DEBUG_PRINT("%s\n", OldParent->ToString());
+        printf("Old Parent ");
+        printf("%s\n", OldParent->ToString());
         if(OldParentParent != NULL)
         {
-            DEBUG_PRINT("Old Parent Parent ");
-            DEBUG_PRINT("%s\n", OldParentParent->ToString());
+            printf("Old Parent Parent ");
+            printf("%s\n", OldParentParent->ToString());
         }
     #endif
     }
