@@ -17,15 +17,17 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int ammount=0x7f060004;
-        public static final int date=0x7f060003;
-        public static final int date_label=0x7f060002;
-        public static final int description=0x7f060005;
-        public static final int transaction_label=0x7f060000;
-        public static final int transaction_type=0x7f060001;
+        public static final int ammount=0x7f060005;
+        public static final int button1=0x7f060002;
+        public static final int description=0x7f060006;
+        public static final int editText=0x7f060000;
+        public static final int radioGroup=0x7f060001;
+        public static final int transaction_label=0x7f060003;
+        public static final int transaction_type=0x7f060004;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int create_type=0x7f030000;
+        public static final int main=0x7f030001;
     }
     public static final class string {
         public static final int ammount_message=0x7f040003;
