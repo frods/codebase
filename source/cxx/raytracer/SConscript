@@ -1,0 +1,6 @@
+Import('env')
+
+raytracer_env = env.Clone()
+
+raytracer = raytracer_env.Program("raytracer", Glob('*.cpp'))
+

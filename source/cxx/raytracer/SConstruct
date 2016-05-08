@@ -1,0 +1,3 @@
+env = Environment(CPPPATH=['.','../../../thirdparty'],
+                  CXXFLAGS="-std=c++0x")
+env.Program('raytracer', [Glob('*.cpp'), '../../../thirdparty/lodepng/lodepng.cpp'])
