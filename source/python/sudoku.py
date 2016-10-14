@@ -14,13 +14,13 @@ class NoSolution(Exception):
 
 class Cell(QtGui.QLineEdit):
     CALCULATING = "calculating"
-    INITIAL_VALUE = "initial"
     def __init__(self, window, cell_id, value=0):
         super(Cell, self).__init__()
         if window:
             self.setMaxLength(1)
+            self.setValidator(QtGui.QIntValidator(1, 9))
 
-        self.initial_value = True
+        self.initial_value = False
         self.collections = []
         self.window = window
         self.id = cell_id
@@ -41,9 +41,8 @@ class Cell(QtGui.QLineEdit):
         if state == self.CALCULATING:
             LOGGER.debug("%s reducing", str(self.id))
             self.setStyleSheet("QLineEdit { background-color: rgba(0, 188, 0, 50);}")
-        elif self.value and (state == self.INITIAL_VALUE or self.initial_value):
+        elif self.initial_value:
             LOGGER.debug("%s reducing", str(self.id))
-            self.initial_value = True
             self.setStyleSheet("QLineEdit { background-color: rgba(0, 0, 100, 50);}")
         else:
             LOGGER.debug("%s normal", str(self.id))
@@ -51,6 +50,10 @@ class Cell(QtGui.QLineEdit):
         if flush:
             QtCore.QCoreApplication.processEvents()
             QtCore.QCoreApplication.flush()
+
+    def freeze(self):
+        self.initial_value = bool(self.value or self.text())
+        self.updateBackground(flush=False)
 
     def getPosibilities(self):
         """
@@ -64,12 +67,16 @@ class Cell(QtGui.QLineEdit):
             available = available.intersection(collection.available)
         return available
 
+    def getValue(self):
+        value = self.text()
+        if not value:
+            return '.'
+        return value
+
     def setValue(self, value, state=None, flush=False):
         """
         Set the cell to the given value and update the collections it belongs to
         """
-        if not value:
-            self.initial_value = False
         self.value = value
         for collection in self.collections:
             collection.valueTaken(value)
@@ -167,13 +174,11 @@ class Sudoku(QtGui.QWidget):
         """
         Reset state to completely unset
         """
-        collections = self.rows + self.cols + self.blocks
-        for collection in collections:
+        for collection in self.iterCollections():
             collection.resetAvailable()
 
-        for row in self.rows:
-            for cell in row.cells:
-                cell.setValue(0)      
+        for cell in self.iterCells():
+            cell.setValue(0)      
 
     def setValues(self, values):
         """
@@ -204,29 +209,42 @@ class Sudoku(QtGui.QWidget):
         for row_num, row in enumerate(self.rows):
             for cell_num, cell in enumerate(row.cells):
                 value = values[row_num][cell_num]
-                cell.setValue(value, Cell.INITIAL_VALUE, flush=False)
+                cell.setValue(value, flush=False)
         if not self.window:
             QtCore.QCoreApplication.processEvents()
             QtCore.QCoreApplication.flush()
 
-    def resetState(self, puzzle):
+    def iterCollections(self):
+        collections = self.rows + self.cols + self.blocks
+        for collection in collections:
+            yield collection
+
+    def iterCells(self):
+        for row in self.rows:
+            for cell in row.cells:
+                yield cell
+
+    def updateState(self, puzzle):
         """
         Set the puzzle to the given state and 
         reduce the collection values
         """
         self.setValues(puzzle)
-        collections = self.rows + self.cols + self.blocks
-        for collection in collections:
+        for collection in self.iterCollections():
             collection.reduce()
+
+    def freezeInitialValues(self):
+        for cell in self.iterCells():
+            cell.freeze()
 
     def serialize(self):
         """
         Create a string of the current state of the puzzle
         """
         grid = ""
-        for row in self.rows:
-            for cell in row.cells:
-                grid += str(cell.value)
+        for cell in self.iterCells():
+            grid += cell.getValue()
+
         return grid
 
     def solved(self):
@@ -234,8 +252,7 @@ class Sudoku(QtGui.QWidget):
         Check if the puzzle is in a solved state
         Return True if solved, False otherwise
         """
-        collections = self.rows + self.cols + self.blocks
-        for collection in collections:
+        for collection in self.iterCollections():
             if not collection.complete():
                 return False
         return True
@@ -244,6 +261,7 @@ class Sudoku(QtGui.QWidget):
         """
         Solve the current puzzle
         """
+        self.freezeInitialValues()
         solved = self.solve_puzzle(self.serialize())
 
     def solve_puzzle(self, puzzle):
@@ -254,19 +272,19 @@ class Sudoku(QtGui.QWidget):
         each value.
         """
         LOGGER.info("Solving puzzle: %s", puzzle)
-        self.resetState(puzzle)
+        self.updateState(puzzle)
 
         try:
             number_set = True
             while number_set:
                 number_set = False
-                for row in self.rows:
-                    for cell in row.cells:
-                        result = cell.pickValue()
-                        if result:
-                            number_set = True
+                for cell in self.iterCells():
+                    result = cell.pickValue()
+                    if result:
+                        number_set = True
         except NoValidPosibilities:
             # A cell had no possible values to set
+            LOGGER.info("No more valid posibilities")
             return False
 
         if not self.solved():
@@ -286,7 +304,7 @@ class Sudoku(QtGui.QWidget):
             LOGGER.info("Trying cell %s with choices: %s", min_cell.id, min_available)
             puzzle = self.serialize()
             for option in min_available:
-                self.resetState(puzzle)
+                self.updateState(puzzle)
                 LOGGER.info("%s Trying option %s", min_cell.id, option)
                 min_cell.setValue(option, Cell.CALCULATING)
                 solved = self.solve_puzzle(self.serialize())
@@ -317,7 +335,6 @@ class Sudoku(QtGui.QWidget):
         self.rows = []
         self.cols = []
         self.blocks = []
-        count = 0
         for row in range(9):
             if len(self.rows) <= row:
                 self.rows.append(Collection())
@@ -329,7 +346,6 @@ class Sudoku(QtGui.QWidget):
                     self.blocks.append(Collection())
 
                 cell = Cell(self.window, (row, col))
-                count += 1
                 self.grid_layout.addWidget(cell, row + row / 3, col + col / 3)
                 self.rows[row].addCell(cell)
                 self.cols[col].addCell(cell)
@@ -361,6 +377,9 @@ class Window(QtGui.QMainWindow):
         Set the status message of the window
         """
         self.statusBar().showMessage(message)
+
+    def loadPuzzle(self, puzzle):
+        self.sudoku.setValues(puzzle)
 
     def show(self):
         file_menu = self.menuBar().addMenu("&File")
@@ -419,6 +438,10 @@ def main():
     window.setWindowTitle("Sudoku Solver v%s" % VERSION)
 
     window.show()
+
+    if len(sys.argv) == 2:
+        window.loadPuzzle(sys.argv[1])
+        
 
     # Enter Qt application main loop
     sys.exit(app.exec_())
